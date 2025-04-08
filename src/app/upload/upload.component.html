@@ -1,0 +1,49 @@
+<mat-card>
+    <mat-card-title>Sube una imagen de evidencia</mat-card-title>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>Nombre</mat-label>
+      <input matInput [(ngModel)]="nombre" />
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>Cliente</mat-label>
+      <input matInput [(ngModel)]="cliente" />
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>Fecha desde</mat-label>
+      <input matInput [matDatepicker]="pickerDesde" [(ngModel)]="fechaDesde" />
+      <mat-datepicker-toggle matSuffix [for]="pickerDesde"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDesde startView="multi-year"></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Fecha hasta</mat-label>
+      <input matInput [matDatepicker]="pickerHasta" [(ngModel)]="fechaHasta" />
+      <mat-datepicker-toggle matSuffix [for]="pickerHasta"></mat-datepicker-toggle>
+      <mat-datepicker #pickerHasta startView="multi-year"></mat-datepicker>
+    </mat-form-field>
+  
+    <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+  
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onUpload()"
+      [disabled]="!selectedFile || !nombre || !cliente || !fechaDesde || !fechaHasta || loading"
+    >
+      Enviar
+    </button>
+  
+    <div class="spinner-container" *ngIf="loading">
+      <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+    </div>
+  
+    <div *ngIf="result" class="result">
+      <p><strong>Autor:</strong> {{ result.autor }}</p>
+      <p><strong>Fecha:</strong> {{ result.fecha }}</p>
+      <p><strong>Cliente:</strong> {{ result.cliente }}</p>
+    </div>
+  </mat-card>
+  
