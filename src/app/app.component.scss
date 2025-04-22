@@ -1,6 +1,17 @@
 .main-container {
-    padding: 2rem;
-    display: flex;
-    justify-content: center;
-  }
-  
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.mat-toolbar, footer{
+  background-color:#173962;
+  color:#ffffff
+}
+
+footer{
+  justify-content: center;
+  display: flex;
+  bottom: 0px;
+  width: 100%;
+}

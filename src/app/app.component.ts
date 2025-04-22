@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { UploadComponent } from './upload/upload.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,14 +10,10 @@ import { UploadComponent } from './upload/upload.component';
   imports: [
     CommonModule,
     MatToolbarModule,
-        UploadComponent
+    UploadComponent,
+    RouterModule
   ],
-  template: `
-    <mat-toolbar color="primary">Validación de Evidencias</mat-toolbar>
-    <div class="main-container">
-      <app-upload></app-upload>
-    </div>
-  `,
+  templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {}

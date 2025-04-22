@@ -1,23 +1,42 @@
 mat-card {
-    max-width: 500px;
-    margin: 2rem auto;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: #e7edf4;
+
+  mat-card-title{
+    color:#173962;
   }
-  
-  .spinner-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 1rem;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper:hover .mat-mdc-form-field-focus-overlay{
+  background-color: grey !important;
+}
+
+::ng-deep .mdc-text-field--filled,
+::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled)
+{
+  background-color: #ffffff !important;
+}
+
+::ng-deep .mat-mdc-raised-button:not(:disabled){
+  background-color: #173962 !important;
+  color:  #fff !important;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.result {
+  margin-top: 1rem;
+
+  p {
+    margin: 0.5rem 0;
   }
-  
-  .result {
-    margin-top: 1rem;
-  
-    p {
-      margin: 0.5rem 0;
-    }
-  }
-  
+}
