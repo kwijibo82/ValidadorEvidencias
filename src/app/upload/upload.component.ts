@@ -54,30 +54,26 @@ export class UploadComponent {
   onUpload() {
     if (!this.selectedFile || !this.nombre || !this.cliente || !this.fechaDesde || !this.fechaHasta) return;
 
-    const payload = {
-      autor_esperado: this.nombre,
-      cliente_esperado: this.cliente,
-      fecha_desde: this.fechaDesde.toISOString(),
-      fecha_hasta: this.fechaHasta.toISOString(),
-      primer_apellido: this.PrimerAppellido,
-      segundo_apellido: this.SegundoApellido || null
-    };
-
     const formData = new FormData();
     formData.append('file', this.selectedFile);
-    formData.append('payload', JSON.stringify(payload));
+    formData.append('autor_esperado', this.nombre);
+    formData.append('cliente_proyecto', this.cliente);
+    formData.append('fecha_min', this.fechaDesde.toISOString().split('T')[0]);
+    formData.append('fecha_max', this.fechaHasta.toISOString().split('T')[0]);
+    formData.append('primer_apellido', this.PrimerAppellido);
+    formData.append('segundo_apellido', this.SegundoApellido || '');
 
     this.loading = true;
     this.result = null;
 
-    //TODO: Borrar console.log en producción
-    console.log('Datos a enviar:', { 
+    // TODO: Borrar console.log en producción
+    console.log('Datos a enviar:', {
       autor: this.nombre,
       cliente: this.cliente,
-      fecha_desde: this.fechaDesde.toISOString(),
-      fecha_hasta: this.fechaHasta.toISOString(),
+      fecha_min: this.fechaDesde.toISOString().split('T')[0],
+      fecha_max: this.fechaHasta.toISOString().split('T')[0],
       primer_apellido: this.PrimerAppellido,
-      segundo_apellido: this.SegundoApellido || null,
+      segundo_apellido: this.SegundoApellido || '',
     });
 
     this.evidenciaService.enviarEvidencia(formData).subscribe({
@@ -99,19 +95,9 @@ export class UploadComponent {
       this.fechaHasta = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
       this.fechaDesdeInput.nativeElement.disabled = true;
       this.fechaHastaInput.nativeElement.disabled = true;
-
-    }
-    else {
+    } else {
       this.fechaDesdeInput.nativeElement.disabled = false;
       this.fechaHastaInput.nativeElement.disabled = false;
     }
   }
 }
-
-
-// const primerDiaDelMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
- 
-// const fechaActual = new Date();
-// const ultimoDiaDelMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 1, 0).getDate();
-// console.log(ultimoDiaDelMes); // Output: 30 (para Abril)
- 
