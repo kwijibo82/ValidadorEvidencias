@@ -54,17 +54,31 @@ export class UploadComponent {
   onUpload() {
     if (!this.selectedFile || !this.nombre || !this.cliente || !this.fechaDesde || !this.fechaHasta) return;
 
+    const payload = {
+      autor_esperado: this.nombre,
+      cliente_esperado: this.cliente,
+      fecha_desde: this.fechaDesde.toISOString(),
+      fecha_hasta: this.fechaHasta.toISOString(),
+      primer_apellido: this.PrimerAppellido,
+      segundo_apellido: this.SegundoApellido || null
+    };
+
     const formData = new FormData();
     formData.append('file', this.selectedFile);
-    formData.append('autor', this.nombre);
-    formData.append('cliente', this.cliente);
-    formData.append('fecha_desde', this.fechaDesde.toISOString());
-    formData.append('fecha_hasta', this.fechaHasta.toISOString());
-    formData.append('primer_apellido', this.PrimerAppellido);
-    formData.append('segundo_apellido', this.SegundoApellido || null);
+    formData.append('payload', JSON.stringify(payload));
 
     this.loading = true;
     this.result = null;
+
+    //TODO: Borrar console.log en producción
+    console.log('Datos a enviar:', { 
+      autor: this.nombre,
+      cliente: this.cliente,
+      fecha_desde: this.fechaDesde.toISOString(),
+      fecha_hasta: this.fechaHasta.toISOString(),
+      primer_apellido: this.PrimerAppellido,
+      segundo_apellido: this.SegundoApellido || null,
+    });
 
     this.evidenciaService.enviarEvidencia(formData).subscribe({
       next: (res) => {
