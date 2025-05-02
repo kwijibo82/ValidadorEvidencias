@@ -1,65 +1,91 @@
-<mat-card>
+<form [formGroup]="uploadForm">
+  <mat-card>
     <mat-card-title>Sube una imagen de evidencia</mat-card-title>
-  
-    
+
     <mat-form-field appearance="fill">
       <mat-label>Nombre</mat-label>
-      <input matInput [(ngModel)]="nombre" required/>
+      <input matInput formControlName="nombre"/>
+      <mat-error *ngIf="uploadForm.get('nombre')!.hasError('required')">
+        El nombre es obligatorio
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Primer apellido</mat-label>
-      <input matInput [(ngModel)]="PrimerAppellido" required/>
+      <input matInput formControlName="primerAppellido"/>
+      <mat-error *ngIf="uploadForm.get('primerAppellido')!.hasError('required')">
+        El primer apellido es obligatorio
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Segundo Apellido</mat-label>
-      <input matInput [(ngModel)]="SegundoApellido" />
+      <input matInput formControlName="segundoApellido" />
     </mat-form-field>
-  
+
     <mat-form-field appearance="fill">
       <mat-label>Cliente o Proyecto</mat-label>
-      <input matInput [(ngModel)]="cliente" required />
+      <input matInput formControlName="cliente" />
+      <mat-error *ngIf="uploadForm.get('cliente')!.hasError('required')">
+        El cliente es obligatorio
+      </mat-error>
     </mat-form-field>
-  
+
     <mat-form-field appearance="fill">
       <mat-label>Fecha desde</mat-label>
-      <input #fechaDesdeInput matInput [matDatepicker]="pickerDesde" [(ngModel)]="fechaDesde" required/>
+      <input #fechaDesdeInput matInput [matDatepicker]="pickerDesde" [max]="uploadForm.value.fechaHasta"
+      formControlName="fechaDesde" />
       <mat-datepicker-toggle matSuffix [for]="pickerDesde"></mat-datepicker-toggle>
       <mat-datepicker #pickerDesde startView="multi-year"></mat-datepicker>
+
+      <mat-error *ngIf="uploadForm.get('fechaDesde')!.hasError('required')">
+        La fecha desde es obligatoria
+      </mat-error>
+      <mat-error *ngIf="uploadForm.get('fechaDesde')!.hasError('matDatepickerMax')">
+        La fecha desde debe ser inferior a la fecha hasta.
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Fecha hasta</mat-label>
-      <input #fechaHastaInput matInput [matDatepicker]="pickerHasta" [(ngModel)]="fechaHasta" required/>
+      <input #fechaHastaInput
+      matInput [matDatepicker]="pickerHasta" formControlName="fechaHasta" [min]="uploadForm.value.fechaDesde"/>
       <mat-datepicker-toggle matSuffix [for]="pickerHasta"></mat-datepicker-toggle>
       <mat-datepicker #pickerHasta startView="multi-year"></mat-datepicker>
+
+      <mat-error *ngIf="uploadForm.get('fechaHasta')!.hasError('required')">
+        La fecha hasta es obligatoria
+      </mat-error>
+      <mat-error *ngIf="uploadForm.get('fechaHasta')!.hasError('matDatepickerMin')">
+        La fecha hasta debe ser superior a la fecha desde.
+      </mat-error>
     </mat-form-field>
 
-    
-    <mat-checkbox [(ngModel)]="usarFechaSistema" (change)="onUsarFechaSistemaChange()">
-      Usar fecha del mes en curso.
+    <mat-checkbox (change)="onUsarFechaSistemaChange($event)">
+      Usar fecha del mes en curso
     </mat-checkbox>
-  
-    <input type="file" (change)="onFileSelected($event)" accept="image/*" />
-  
+
+    <input type="file" formControlName="file" (change)="onFileSelected($event)" accept="image/*" />
+
     <button
       mat-raised-button
       color="primary"
       (click)="onUpload()"
-      [disabled]="!selectedFile || !nombre || !cliente || !fechaDesde || !fechaHasta || loading"
+      [disabled]="uploadForm.invalid"
     >
       Enviar
     </button>
-  
+
     <div class="spinner-container" *ngIf="loading">
       <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
     </div>
-  
+
     <div *ngIf="result" class="result">
       <p><strong>Autor:</strong> {{ result.autor }}</p>
       <p><strong>Fecha:</strong> {{ result.fecha }}</p>
       <p><strong>Cliente:</strong> {{ result.cliente }}</p>
     </div>
+
+    <button mat-raised-button color="accent" (click)="openModalValidations()">Abrir Modal</button>
   </mat-card>
-  
+</form>
